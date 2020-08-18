@@ -17,6 +17,9 @@ public class Ingredient {
     @ManyToOne
     private Recipe recipe;
 
+    public Ingredient() {
+    }
+
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
     }

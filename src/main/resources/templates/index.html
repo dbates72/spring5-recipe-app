@@ -5,6 +5,32 @@
     <title>Recipe Home</title>
 </head>
 <body>
-    <h1>My Recipes</h1>
+<h2 th:text="'Recipes'">Recipe default</h2>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Description</th>
+    </tr>
+    <tr th:each="recipe:${recipes}">
+        <td th:text="${recipe.id}">Recipe ID placeholder</td>
+        <td th:text="${recipe.description}">Recipe description placeholder</td>
+    </tr>
+<!--    <tr>-->
+<!--        <th>Ingredient</th>-->
+<!--        <th>UOM</th>-->
+<!--        <th>Amount</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    <tr th:each="recipe:${recipes}">-->
+<!--        <tr th:each="ingredient:${recipe.ingredients}">-->
+<!--            <td th:text="${ingredient.description}">1</td>-->
+<!--            <td th:text="${ingredient.uom}">Joe</td>-->
+<!--            <td th:text="${ingredient.amount}">Buck</td>-->
+<!--        </tr>-->
+<!--    </tr>-->
+    </tbody>
+</table>
 </body>
 </html>
