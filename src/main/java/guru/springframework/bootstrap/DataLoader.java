@@ -4,11 +4,14 @@ import guru.springframework.domain.*;
 import guru.springframework.repositories.CategoryRepository;
 import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.repositories.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
+@Slf4j
 @Component
 public class DataLoader implements CommandLineRunner {
     private final RecipeRepository recipeRepository;
@@ -27,8 +30,16 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void loadData() {
-        Iterable<UnitOfMeasure> uoms=unitOfMeasureRepository.findAll();
-        Iterable<Category> categories=categoryRepository.findAll();
+        log.debug("Loading data");
+        Optional<UnitOfMeasure> tableSpoon=unitOfMeasureRepository.findByDescription("Tablespoon");
+        Optional<UnitOfMeasure> teaSpoon=unitOfMeasureRepository.findByDescription("Teaspoon");
+        Optional<UnitOfMeasure> cup=unitOfMeasureRepository.findByDescription("Cup");
+        Optional<UnitOfMeasure> clove=unitOfMeasureRepository.findByDescription("Clove");
+        Optional<UnitOfMeasure> each=unitOfMeasureRepository.findByDescription("Each");
+        Optional<UnitOfMeasure> pinch=unitOfMeasureRepository.findByDescription("Pinch");
+        Optional<UnitOfMeasure> pint=unitOfMeasureRepository.findByDescription("Pint");
+        Optional<UnitOfMeasure> pound=unitOfMeasureRepository.findByDescription("Pound");
+        Optional<Category> mexicanCategory=categoryRepository.findByDescription("Mexican");
 
         Recipe perfectGuacamole= new Recipe();
         perfectGuacamole.setDescription("Perfect Guacamole");
@@ -39,15 +50,16 @@ public class DataLoader implements CommandLineRunner {
         perfectGuacamole.setPrepTime(0);
         perfectGuacamole.setDifficulty(Difficulty.EASY);
         perfectGuacamole.setDirections("The simplest version of guacamole is just mashed avocados with salt. Don’t let the lack of availability of other ingredients stop you from making guacamole.\n");
-        addRecipeCategory(categories,perfectGuacamole,"Mexican");
+        perfectGuacamole.getCategories().add(mexicanCategory.get());
+        log.debug("Created recipe :" + perfectGuacamole.getDescription());
 
-        addIngredientToRecipe(perfectGuacamole,uoms,"Avocado", "Each", new BigDecimal(1.0));
-        addIngredientToRecipe(perfectGuacamole,uoms,"Salt", "Teaspoon", new BigDecimal(.25));
-        addIngredientToRecipe(perfectGuacamole,uoms,"Lemon Juice", "Tablespoon", new BigDecimal(1.0));
-        addIngredientToRecipe(perfectGuacamole,uoms,"Serrano Chiles", "Each", new BigDecimal(1.0));
-        addIngredientToRecipe(perfectGuacamole,uoms,"Cilantro", "Tablespoon", new BigDecimal(2.0));
-        addIngredientToRecipe(perfectGuacamole,uoms,"Black Pepper", "Pinch", new BigDecimal(1.0));
-        addIngredientToRecipe(perfectGuacamole,uoms,"Ripe Tomato", "Each", new BigDecimal(1.0));
+        addIngredientToRecipe(perfectGuacamole,each,"Avocado", new BigDecimal(1.0));
+        addIngredientToRecipe(perfectGuacamole,teaSpoon,"Salt", new BigDecimal(.25));
+        addIngredientToRecipe(perfectGuacamole,tableSpoon,"Lemon Juice", new BigDecimal(1.0));
+        addIngredientToRecipe(perfectGuacamole,each,"Serrano Chiles", new BigDecimal(1.0));
+        addIngredientToRecipe(perfectGuacamole,tableSpoon,"Cilantro", new BigDecimal(2.0));
+        addIngredientToRecipe(perfectGuacamole,pinch,"Black Pepper", new BigDecimal(1.0));
+        addIngredientToRecipe(perfectGuacamole,each,"Ripe Tomato", new BigDecimal(1.0));
 
         recipeRepository.save(perfectGuacamole);
 
@@ -60,70 +72,40 @@ public class DataLoader implements CommandLineRunner {
         spicyGrilledChickenTacos.setPrepTime(20);
         spicyGrilledChickenTacos.setDifficulty(Difficulty.MODERATE);
         spicyGrilledChickenTacos.setDirections("In a large bowl, stir together the chili powder, oregano, cumin, sugar, salt, garlic and orange zest. Stir in the orange juice and olive oil to make a loose paste. Add the chicken to the bowl and toss to coat all over.\n");
-        addRecipeCategory(categories,spicyGrilledChickenTacos,"Mexican");
+        spicyGrilledChickenTacos.getCategories().add(mexicanCategory.get());
+        log.debug("Created Recipe: " + spicyGrilledChickenTacos.getDescription());
 
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Ancho Chili Powder", "Tablespoon", new BigDecimal(2.0));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Dired Oregano", "Teaspoon", new BigDecimal(1.0));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Dried Cumin", "Teaspoon", new BigDecimal(1.0));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Sugar", "Teaspoon", new BigDecimal(1.0));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Salt", "Teaspoon", new BigDecimal(.5));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Chopped Garlic", "Clove", new BigDecimal(1.0));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Orange Zest", "Tablespoon", new BigDecimal(1.0));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Orange Juice", "Tablespoon", new BigDecimal(3.0));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Olive Oil", "Tablespoon", new BigDecimal(2.0));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Skinless, boneless chicken thigh", "Pound", new BigDecimal(5.0));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Corn Tortillas", "Each", new BigDecimal(8.0));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Packed baby arugula", "Cup", new BigDecimal(3.0));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Sliced Radishes", "Each", new BigDecimal(3.0));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Cherry tomatoes, halved", "Pint", new BigDecimal(.5));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Sliced Red Onion", "Each", new BigDecimal(.25));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Cilantro", "Pinch", new BigDecimal(1.0));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Avocados", "Each", new BigDecimal(2.0));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Sour Cream", "Cup", new BigDecimal(.5));
-        addIngredientToRecipe(spicyGrilledChickenTacos,uoms,"Lime wedges", "Each", new BigDecimal(1.0));
+        addIngredientToRecipe(spicyGrilledChickenTacos,tableSpoon,"Ancho Chili Powder", new BigDecimal(2.0));
+        addIngredientToRecipe(spicyGrilledChickenTacos,teaSpoon,"Dired Oregano", new BigDecimal(1.0));
+        addIngredientToRecipe(spicyGrilledChickenTacos,teaSpoon,"Dried Cumin", new BigDecimal(1.0));
+        addIngredientToRecipe(spicyGrilledChickenTacos,teaSpoon,"Sugar", new BigDecimal(1.0));
+        addIngredientToRecipe(spicyGrilledChickenTacos,teaSpoon,"Salt", new BigDecimal(.5));
+        addIngredientToRecipe(spicyGrilledChickenTacos,clove,"Chopped Garlic", new BigDecimal(1.0));
+        addIngredientToRecipe(spicyGrilledChickenTacos,tableSpoon,"Orange Zest", new BigDecimal(1.0));
+        addIngredientToRecipe(spicyGrilledChickenTacos,tableSpoon,"Orange Juice", new BigDecimal(3.0));
+        addIngredientToRecipe(spicyGrilledChickenTacos,tableSpoon,"Olive Oil", new BigDecimal(2.0));
+        addIngredientToRecipe(spicyGrilledChickenTacos,pound,"Skinless, boneless chicken thigh", new BigDecimal(5.0));
+        addIngredientToRecipe(spicyGrilledChickenTacos,each,"Corn Tortillas", new BigDecimal(8.0));
+        addIngredientToRecipe(spicyGrilledChickenTacos,cup,"Packed baby arugula", new BigDecimal(3.0));
+        addIngredientToRecipe(spicyGrilledChickenTacos,each,"Sliced Radishes", new BigDecimal(3.0));
+        addIngredientToRecipe(spicyGrilledChickenTacos,pint,"Cherry tomatoes, halved", new BigDecimal(.5));
+        addIngredientToRecipe(spicyGrilledChickenTacos,each,"Sliced Red Onion", new BigDecimal(.25));
+        addIngredientToRecipe(spicyGrilledChickenTacos,pinch,"Cilantro", new BigDecimal(1.0));
+        addIngredientToRecipe(spicyGrilledChickenTacos,each,"Avocados", new BigDecimal(2.0));
+        addIngredientToRecipe(spicyGrilledChickenTacos,cup,"Sour Cream", new BigDecimal(.5));
+        addIngredientToRecipe(spicyGrilledChickenTacos,each,"Lime wedges", new BigDecimal(1.0));
 
         recipeRepository.save(spicyGrilledChickenTacos);
     }
 
-    void addIngredientToRecipe(Recipe recipe, Iterable uoms, String ingredientDescription, String ingredientUom, BigDecimal ingredientAmount) {
+    void addIngredientToRecipe(Recipe recipe, Optional<UnitOfMeasure> uom, String ingredientDescription, BigDecimal ingredientAmount) {
+        log.debug("Adding " + ingredientDescription + " to " + recipe.getDescription());
         Ingredient ingredient = new Ingredient();
         ingredient.setDescription(ingredientDescription);
-        setIngredientUom(uoms,ingredient,ingredientUom);
+        ingredient.setUom(uom.get());
         ingredient.setAmount(ingredientAmount);
         recipe.addIngredient(ingredient);
         ingredient.setRecipe(recipe);
     }
 
-    void setIngredientUom(Iterable<UnitOfMeasure> uoms, Ingredient ingredient, String uomStr) {
-        uoms.forEach(uom->{
-            if (uom!=null){
-                if(uom.getDescription().equals(uomStr)) {
-                    System.out.println("UOM match: " + uom.getDescription());
-                    ingredient.setUom(uom);
-                }
-            }
-            else {
-                System.out.println("UOM is NULL");
-            }
-        });
-    }
-
-    void addRecipeCategory(Iterable<Category> categories, Recipe recipe, String categoryStr) {
-        categories.forEach(category-> {
-            if(category!=null) {
-                if(category.getDescription().equals(categoryStr)) {
-                    System.out.println("Category match: " + category.getDescription());
-                    if(recipe.getCategories()!=null) {
-                        recipe.getCategories().add(category);
-                    }
-                    else {
-                        System.out.println("Recipe categories is NULL");
-                    }
-                }
-            }
-            else {
-                System.out.println("Category is NULL");
-            }
-        });
-    }
 }
