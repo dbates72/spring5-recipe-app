@@ -25,7 +25,7 @@ public class UnitOfMeasureRepositoryIT {
     //@DirtiesContext
     public void findByDescription() {
         Optional<UnitOfMeasure> unitOfMeasureOptional = unitOfMeasureRepository.findByDescription("Teaspoon");
-        assertEquals("Teaspoonz", unitOfMeasureOptional.get().getDescription());
+        assertEquals("Teaspoon", unitOfMeasureOptional.get().getDescription());
     }
 
     @Test
