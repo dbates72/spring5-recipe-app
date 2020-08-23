@@ -1,6 +1,5 @@
 package guru.springframework.bootstrap;
 
-import com.sun.tools.javap.TypeAnnotationWriter;
 import guru.springframework.domain.*;
 import guru.springframework.repositories.CategoryRepository;
 import guru.springframework.repositories.RecipeRepository;
