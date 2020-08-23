@@ -22,7 +22,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class RecipeControllerTest {
     private RecipeController recipeController;
-    private Long id=1L;
+    private Long id1=1L;
+    private String desc1="desc 1";
+    private Long id2=2L;
+    private String desc2="desc 2";
     private MockMvc mockMvc;
 
     @Mock
@@ -41,23 +44,34 @@ public class RecipeControllerTest {
     public void testMvc() throws Exception {
         //MockMvc test
         mockMvc= MockMvcBuilders.standaloneSetup(recipeController).build();
-        mockMvc.perform(get("/recipe/show/" + id))
+        mockMvc.perform(get("/recipe/show/"+id1))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/show"));
+        mockMvc.perform(get("/recipe/show/"+id2))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/show"));
     }
 
     @Test
-    public void getRecipe() {
+    public void testGetRecipe() {
+        getRecipe(id1,desc1);
+        //Something with verifying number of times breaks when I run this method twice
+        //Trying to check to see if the output changes for different IDs
+        //getRecipe(id2,desc2);
+    }
+
+    public void getRecipe(Long id, String desc) {
         //Data setup
         Recipe recipe = new Recipe();
         recipe.setId(id);
+        recipe.setDescription(desc);
 
         //Mockito setup
         when(recipeService.getRecipe(id)).thenReturn(recipe);
         ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
 
         //Test method
-        String recipeView=recipeController.getRecipe(model);
+        String recipeView=recipeController.getRecipe(String.valueOf(id),model);
 
         //JUnit Assertions
         assertEquals("recipe/show", recipeView);
@@ -66,5 +80,6 @@ public class RecipeControllerTest {
         Recipe returnedRecipe = argumentCaptor.getValue();
         assertNotNull(returnedRecipe);
         assertEquals(id, returnedRecipe.getId());
+        assertEquals(desc, returnedRecipe.getDescription());
     }
 }

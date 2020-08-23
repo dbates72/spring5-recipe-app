@@ -54,6 +54,7 @@
                                 </td>
                             </tr>
                             <tr th:each="recipe:${recipes}">
+                                <!-- this allows IntelliJ to provide hints while developing the page -->
                                 <!--/*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"*/-->
                                 <td th:text="${recipe.id}">
                                     789</td>

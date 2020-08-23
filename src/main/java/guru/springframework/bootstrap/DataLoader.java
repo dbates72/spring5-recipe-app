@@ -1,5 +1,6 @@
 package guru.springframework.bootstrap;
 
+import com.sun.tools.javap.TypeAnnotationWriter;
 import guru.springframework.domain.*;
 import guru.springframework.repositories.CategoryRepository;
 import guru.springframework.repositories.RecipeRepository;
@@ -40,6 +41,8 @@ public class DataLoader implements CommandLineRunner {
         Optional<UnitOfMeasure> pint=unitOfMeasureRepository.findByDescription("Pint");
         Optional<UnitOfMeasure> pound=unitOfMeasureRepository.findByDescription("Pound");
         Optional<Category> mexicanCategory=categoryRepository.findByDescription("Mexican");
+        Optional<Category> americanCategory=categoryRepository.findByDescription("American");
+
 
         Recipe perfectGuacamole= new Recipe();
         perfectGuacamole.setDescription("Perfect Guacamole");
@@ -49,8 +52,14 @@ public class DataLoader implements CommandLineRunner {
         perfectGuacamole.setCookTime(10);
         perfectGuacamole.setPrepTime(0);
         perfectGuacamole.setDifficulty(Difficulty.EASY);
+        perfectGuacamole.setServings(4);
+        perfectGuacamole.setSource("Reddit");
+        perfectGuacamole.setUrl("https://davidbates.net");
         perfectGuacamole.setDirections("The simplest version of guacamole is just mashed avocados with salt. Don’t let the lack of availability of other ingredients stop you from making guacamole.\n");
+        perfectGuacamole.setNotes(perfectGuacamoleNotes);
+
         perfectGuacamole.getCategories().add(mexicanCategory.get());
+        perfectGuacamole.getCategories().add(americanCategory.get());
         log.debug("Created recipe :" + perfectGuacamole.getDescription());
 
         addIngredientToRecipe(perfectGuacamole,each,"Avocado", new BigDecimal(1.0));
@@ -70,9 +79,13 @@ public class DataLoader implements CommandLineRunner {
         spicyGrilledChickenTacos.setNotes(spicyGrilledChickenTacosNotes);
         spicyGrilledChickenTacos.setCookTime(9);
         spicyGrilledChickenTacos.setPrepTime(20);
+        spicyGrilledChickenTacos.setServings(4);
+        spicyGrilledChickenTacos.setSource("Dark Web");
+        spicyGrilledChickenTacos.setUrl("https://davidbates.net");
         spicyGrilledChickenTacos.setDifficulty(Difficulty.MODERATE);
         spicyGrilledChickenTacos.setDirections("In a large bowl, stir together the chili powder, oregano, cumin, sugar, salt, garlic and orange zest. Stir in the orange juice and olive oil to make a loose paste. Add the chicken to the bowl and toss to coat all over.\n");
         spicyGrilledChickenTacos.getCategories().add(mexicanCategory.get());
+        spicyGrilledChickenTacos.getCategories().add(americanCategory.get());
         log.debug("Created Recipe: " + spicyGrilledChickenTacos.getDescription());
 
         addIngredientToRecipe(spicyGrilledChickenTacos,tableSpoon,"Ancho Chili Powder", new BigDecimal(2.0));
