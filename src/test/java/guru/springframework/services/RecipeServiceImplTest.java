@@ -2,27 +2,49 @@ package guru.springframework.services;
 
 import guru.springframework.domain.Recipe;
 import guru.springframework.repositories.RecipeRepository;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 public class RecipeServiceImplTest {
-    RecipeServiceImpl recipeService;
+    private RecipeServiceImpl recipeService;
+
+    private Long id=1L;
 
     @Mock
-    RecipeRepository recipeRepository;
+    private RecipeRepository recipeRepository;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         recipeService= new RecipeServiceImpl(recipeRepository);
+    }
+
+    @Test
+    public void getRecipe() {
+        //Mock return data setup
+        Recipe recipe = new Recipe();
+        recipe.setId(id);
+
+        //Mock object setup: when recipeService calls recipeRepository.findAll(), return the recipesData that we setup back to recipeService
+        when(recipeRepository.findById(id)).thenReturn(Optional.of(recipe));
+
+        //Test of code
+        Recipe foundRecipe = recipeService.getRecipe(id);
+
+        //Assertions
+        assertNotNull(foundRecipe);
+        assertEquals(1, foundRecipe.getId());
+        verify(recipeRepository, times(1)).findById(id);
     }
 
     @Test

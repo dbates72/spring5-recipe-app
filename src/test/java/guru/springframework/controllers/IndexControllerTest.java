@@ -2,8 +2,11 @@ package guru.springframework.controllers;
 
 import guru.springframework.domain.Recipe;
 import guru.springframework.services.RecipeService;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.aspectj.lang.annotation.Before;
+import org.hamcrest.Matcher;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -15,21 +18,21 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 public class IndexControllerTest {
-    IndexController indexController;
+    private IndexController indexController;
 
     @Mock
-    Model model;
+    private Model model;
 
     @Mock
-    RecipeService recipeService;
+    private RecipeService recipeService;
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
         indexController=new IndexController(recipeService);
