@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Recipe implements Comparable<Recipe>{
+public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -147,20 +147,5 @@ public class Recipe implements Comparable<Recipe>{
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return ((Recipe) obj).getId() == this.id;
-    }
-
-    @Override
-    public int compareTo(Recipe o) {
-        return Long.compare(o.getId(), this.getId());
     }
 }
