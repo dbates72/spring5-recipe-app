@@ -57,11 +57,15 @@
                                 <!-- this allows IntelliJ to provide hints while developing the page -->
                                 <!--/*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"*/-->
                                 <td th:text="${recipe.id}">
-                                    789</td>
+                                    789
+                                </td>
                                 <td th:text="${recipe.description}">
                                     description placeholder</td>
                                 <td>
-                                    <a href="#" th:href="@{'/recipe/show/' + ${recipe.id}}">View</a>
+                                    <a href="#" th:href="@{'/recipe/'+ ${recipe.id} + '/show/' }">View</a>
+                                </td>
+                                <td>
+                                    <a href="#" th:href="@{'/recipe/'+ ${recipe.id} + '/update/' }">Update</a>
                                 </td>
                             </tr>
                         </table>

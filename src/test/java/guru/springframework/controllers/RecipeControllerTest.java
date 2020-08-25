@@ -44,10 +44,10 @@ public class RecipeControllerTest {
     public void testMvc() throws Exception {
         //MockMvc test
         mockMvc= MockMvcBuilders.standaloneSetup(recipeController).build();
-        mockMvc.perform(get("/recipe/show/"+id1))
+        mockMvc.perform(get("/recipe/" + id1 + "/show/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/show"));
-        mockMvc.perform(get("/recipe/show/"+id2))
+        mockMvc.perform(get("/recipe/" + id2 + "/show/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/show"));
     }
