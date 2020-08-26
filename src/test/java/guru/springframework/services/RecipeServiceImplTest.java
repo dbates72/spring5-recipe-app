@@ -32,7 +32,7 @@ public class RecipeServiceImplTest {
     RecipeCommandToRecipe recipeCommandToRecipe;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp()  {
         MockitoAnnotations.initMocks(this);
         recipeService= new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
@@ -71,5 +71,11 @@ public class RecipeServiceImplTest {
         //Assertions
         assertEquals(recipes.size(), 1);
         verify(recipeRepository, times(1)).findAll();
+    }
+
+    @Test
+    public void testDeleteById()  {
+        recipeService.deleteById(2L);
+        verify(recipeRepository, times(1)).deleteById(2L);
     }
 }
